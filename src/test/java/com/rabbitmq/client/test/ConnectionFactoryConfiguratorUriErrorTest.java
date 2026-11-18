@@ -73,6 +73,14 @@ public class ConnectionFactoryConfiguratorUriErrorTest {
     }
 
     @Test
+    public void userInfoWithSeveralColonsDoesNotLeakPassword() {
+        Map<String, String> properties = uri("amqp://user:" + PASSWORD + ":x@host:5672/vhost");
+        assertThatThrownBy(() -> ConnectionFactoryConfigurator.load(new ConnectionFactory(), properties, ""))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageNotContaining(PASSWORD);
+    }
+
+    @Test
     public void validUriStillLoads() {
         ConnectionFactory cf = new ConnectionFactory();
         ConnectionFactoryConfigurator.load(cf, uri("amqp://user:" + PASSWORD + "@host:5672/vhost"), "");
