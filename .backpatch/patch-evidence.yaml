@@ -1,0 +1,21 @@
+schema: osera-patch-evidence/0.1.0
+producer: moderne
+release: 5.14.3.1-backpatch-00001
+baseline: v5.14.3+backpatch.baseline
+fixes:
+  - cve: CVE-2026-63335
+    upstream_fix_url: https://github.com/rabbitmq/rabbitmq-java-client/commit/abd6d60d4e2bfc1a327dc90ab246b2e8aca1f33b
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-63335
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-rabbitmq-java-client/commit/0439fd7
+    basis: adapted
+    artifacts:
+      - com.rabbitmq:amqp-client
+    note: New in this release; ported onto 5.14.3; fixed at 5.14.3.1-backpatch-00001 (backpatch-rabbitmq-java-client@0439fd7).
+tests:
+  commit: 0439fd7f69be24d6ef2af62af693252724cfeeee
+  command: "weekend-amqp-5.14.3.sh's build: mvn -B -P!setup-test-cluster -Dit.test=ClientTests,SSLTests clean verify against a RabbitMQ broker on localhost with TLS on 5671, failures ignored; the report decides"
+  runtime: OpenJDK 1.8.0_382 (Zulu 8.72.0.17, linux-aarch64), Apache Maven 3.9.16, RabbitMQ 3.12.1 (Ubuntu 24.04 package, node rabbit@localhost, TLS on 5671 with test certificates) on a Linux aarch64 devpod
+  report: amqp-client-5.14.3.1-backpatch-00001-tests.zip
+  report_sha256: 9301523a9f0ac27632398cea85c942cb32369ddedfbd62ef6867267af3b2ad65
+  result: pass
+  note: "216 tests at the patch commit, 3 of them skipped by the suite, 0 failed, 0 errors. ClientTests and SSLTests ran on a Linux aarch64 devpod against Ubuntu's rabbitmq-server, rabbitmqctl at its native path, TLS on 5671 with test certificates made there (a CA, a server certificate for localhost, a client keycert.p12); the baseline 5.14.3 ran there too: 215 tests, 0 red. SSLTests skips VerifiedConnection, BadVerifiedConnection and HostnameVerification on Java 8 by its own condition (it expects Java 11), at the baseline too."
