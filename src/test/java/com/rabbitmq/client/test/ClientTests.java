@@ -81,6 +81,7 @@ import org.junit.runners.Suite;
     ProcedureDescriptionTest.class,
     ValueReaderTest.class,
     RpcServerMainloopTest.class,
+    JsonRpcServerBadRequestTest.class,
     RefreshProtectedCredentialsProviderTest.class,
     DefaultCredentialsRefreshServiceTest.class,
     OAuth2ClientCredentialsGrantCredentialsProviderTest.class,

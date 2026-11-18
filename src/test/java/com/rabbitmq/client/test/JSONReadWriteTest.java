@@ -21,6 +21,7 @@ import com.rabbitmq.tools.json.JSONWriter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 public class JSONReadWriteTest {
@@ -106,6 +107,22 @@ public class JSONReadWriteTest {
         }
         catch (IllegalStateException e) {}
 
+    }
+
+    @Test(timeout = 10000)
+    public void truncatedInputInsideStringShouldThrow() {
+        for (String json : new String[] {
+            "{\"method\":\"x", "\"", "'abc", "{\"a\":\"b\\\\", "[\"x" }) {
+            assertThrows(json, IllegalStateException.class, () -> new JSONReader().read(json));
+        }
+    }
+
+    @Test(timeout = 10000)
+    public void truncatedLineCommentShouldThrow() {
+        assertThrows(IllegalStateException.class, () -> new JSONReader().read("//"));
+        assertThrows(IllegalStateException.class, () -> new JSONReader().read("// no newline"));
+        // a terminated comment is still skipped
+        assertEquals(1, ((java.util.Map<?, ?>) new JSONReader().read("// c\n{\"a\":1}")).get("a"));
     }
 
 }
