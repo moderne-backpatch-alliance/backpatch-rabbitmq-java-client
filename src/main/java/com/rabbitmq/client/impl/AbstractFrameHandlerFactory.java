@@ -25,6 +25,8 @@ public abstract class AbstractFrameHandlerFactory implements FrameHandlerFactory
     protected final int connectionTimeout;
     protected final SocketConfigurator configurator;
     protected final boolean ssl;
+    // Holds the frame_max applied until connection.tune, despite its name.
+    // Kept for subclasses, as this field is protected.
     protected final int maxInboundMessageBodySize;
 
     protected AbstractFrameHandlerFactory(int connectionTimeout, SocketConfigurator configurator,

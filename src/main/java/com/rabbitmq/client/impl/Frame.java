@@ -26,6 +26,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntSupplier;
 import static java.lang.String.format;
 
 /**
@@ -85,6 +86,17 @@ public class Frame {
      * @return a new Frame if we read a frame successfully, otherwise null
      */
     public static Frame readFrom(DataInputStream is, int maxPayloadSize) throws IOException {
+        // This overload's limit is exclusive, the supplier's limit is not.
+        return readFrom(is, () -> maxPayloadSize - 1);
+    }
+
+    /**
+     * Protected API - Factory method to instantiate a Frame by reading an
+     * inbound frame from the given stream, checking its size against the latest limit.
+     *
+     * @return a new Frame if we read a frame successfully, otherwise null
+     */
+    public static Frame readFrom(DataInputStream is, IntSupplier payloadLimit) throws IOException {
         int type;
         int channel;
 
@@ -109,16 +121,9 @@ public class Frame {
         }
 
         channel = is.readUnsignedShort();
-        int payloadSize = is.readInt();
-        if (payloadSize >= maxPayloadSize) {
-            throw new IllegalStateException(format(
-                "Frame body is too large (%d), maximum configured size is %d. " +
-                    "See ConnectionFactory#setMaxInboundMessageBodySize " +
-                    "if you need to increase the limit.",
-                payloadSize, maxPayloadSize
-            ));
-        }
-        byte[] payload = new byte[payloadSize];
+        int frameSize = is.readInt();
+        Utils.enforceFrameMax(frameSize, payloadLimit.getAsInt());
+        byte[] payload = new byte[frameSize];
         is.readFully(payload);
 
         int frameEndMarker = is.readUnsignedByte();

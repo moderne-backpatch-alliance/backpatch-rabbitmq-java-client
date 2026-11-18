@@ -420,6 +420,11 @@ public class AMQConnection extends ShutdownNotifierComponent implements Connecti
                                    connTune.getFrameMax());
             this._frameMax = frameMax;
 
+            // Inbound payload limit: the smaller of frame_max (less framing
+            // overhead) and the configured message body cap.
+            _frameHandler.setFrameMax(
+                Utils.inboundFrameMax(this.maxInboundMessageBodySize, frameMax));
+
             int negotiatedHeartbeat =
                 negotiatedMaxValue(this.requestedHeartbeat,
                                    connTune.getHeartbeat());

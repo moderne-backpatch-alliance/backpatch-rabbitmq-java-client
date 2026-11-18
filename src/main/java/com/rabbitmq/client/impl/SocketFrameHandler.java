@@ -29,6 +29,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.IntSupplier;
 
 /**
  * A socket-based frame handler.
@@ -52,7 +53,8 @@ public class SocketFrameHandler implements FrameHandler {
     /** Socket's outputstream - data to the broker - synchronized on */
     private final DataOutputStream _outputStream;
 
-    private final int maxInboundMessageBodySize;
+    private volatile int framePayloadLimit;
+    private final IntSupplier payloadLimitSupplier;
 
     /** Time to linger before closing the socket forcefully. */
     public static final int SOCKET_CLOSING_TIMEOUT = 1;
@@ -68,13 +70,14 @@ public class SocketFrameHandler implements FrameHandler {
      * @param socket the socket to use
      */
     public SocketFrameHandler(Socket socket, ExecutorService shutdownExecutor,
-                              int maxInboundMessageBodySize) throws IOException {
+                              int frameMax) throws IOException {
         _socket = socket;
         _shutdownExecutor = shutdownExecutor;
-        this.maxInboundMessageBodySize = maxInboundMessageBodySize;
+        this.setFrameMax(frameMax);
 
         _inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         _outputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        this.payloadLimitSupplier = () -> this.framePayloadLimit;
     }
 
     @Override
@@ -183,9 +186,16 @@ public class SocketFrameHandler implements FrameHandler {
     }
 
     @Override
+    public void setFrameMax(int frameMax) {
+        this.framePayloadLimit = Utils.framePayloadLimit(frameMax);
+    }
+
+    @Override
     public Frame readFrame() throws IOException {
         synchronized (_inputStream) {
-            return Frame.readFrom(_inputStream, this.maxInboundMessageBodySize);
+            // The limit can change while a read waits for the next frame,
+            // hence the supplier: the frame must be checked against the latest value.
+            return Frame.readFrom(_inputStream, this.payloadLimitSupplier);
         }
     }
 

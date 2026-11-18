@@ -86,7 +86,10 @@ import org.junit.runners.Suite;
     DefaultCredentialsRefreshServiceTest.class,
     OAuth2ClientCredentialsGrantCredentialsProviderTest.class,
     RefreshCredentialsTest.class,
-    AMQConnectionRefreshCredentialsTest.class
+    AMQConnectionRefreshCredentialsTest.class,
+    NegotiatedFrameMaxInboundTest.class,
+    InboundFrameMax.class,
+    UtilsTest.class
 })
 public class ClientTests {
 

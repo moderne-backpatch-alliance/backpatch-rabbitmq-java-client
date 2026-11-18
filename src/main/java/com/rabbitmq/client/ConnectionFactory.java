@@ -979,13 +979,13 @@ public class ConnectionFactory implements Cloneable {
                 }
                 this.frameHandlerFactory = new SocketChannelFrameHandlerFactory(
                     connectionTimeout, nioParams, isSSL(), sslContextFactory,
-                    this.maxInboundMessageBodySize);
+                    AMQP.FRAME_MIN_SIZE);
             }
             return this.frameHandlerFactory;
         } else {
             return new SocketFrameHandlerFactory(connectionTimeout, socketFactory,
                 socketConf, isSSL(), this.shutdownExecutor, sslContextFactory,
-                this.maxInboundMessageBodySize);
+                AMQP.FRAME_MIN_SIZE);
         }
 
     }
