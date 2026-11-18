@@ -30,6 +30,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     TableTest.class,
+    ShortstrRoundTripTest.class,
     LongStringTest.class,
     BlockingCellTest.class,
     TruncatedInputStreamTest.class,
@@ -79,6 +80,7 @@ import org.junit.runners.Suite;
     ValueWriterTest.class,
     ProcedureDescriptionTest.class,
     ValueReaderTest.class,
+    RpcServerMainloopTest.class,
     RefreshProtectedCredentialsProviderTest.class,
     DefaultCredentialsRefreshServiceTest.class,
     OAuth2ClientCredentialsGrantCredentialsProviderTest.class,
