@@ -1,6 +1,6 @@
 schema: osera-patch-evidence/0.1.0
 producer: moderne
-release: 5.14.3.1-backpatch-00008
+release: 5.14.3.1-backpatch-00009
 baseline: v5.14.3+backpatch.baseline
 fixes:
   - cve: CVE-2026-63335
@@ -66,12 +66,20 @@ fixes:
     basis: adapted
     artifacts:
       - com.rabbitmq:amqp-client
-    note: New in this release; ported onto 5.14.3; fixed at 5.14.3.1-backpatch-00008 (backpatch-rabbitmq-java-client@3075e36..f6617be).
+    note: Carried from 5.14.3.1-backpatch-00008; ported onto 5.14.3; fixed at 5.14.3.1-backpatch-00008 (backpatch-rabbitmq-java-client@3075e36..f6617be).
+  - cve: CVE-2026-106123
+    upstream_fix_url: https://github.com/advisories/GHSA-h6w7-qmcm-q6xr
+    advisory_url: https://nvd.nist.gov/vuln/detail/CVE-2026-106123
+    patch_commit_url: https://github.com/moderne-backpatch-alliance/backpatch-rabbitmq-java-client/compare/fee745f~1...5561289
+    basis: adapted
+    artifacts:
+      - com.rabbitmq:amqp-client
+    note: New in this release; ported onto 5.14.3; fixed at 5.14.3.1-backpatch-00009 (backpatch-rabbitmq-java-client@fee745f..5561289).
 tests:
-  commit: f6617bee63935497c8ff3981499ef5b63b55d525
+  commit: 556128999c2f44110752a32fbfc925275169b3e5
   command: "weekend-amqp-5.14.3.sh's build: mvn -B -P!setup-test-cluster -Dit.test=ClientTests,SSLTests clean verify against a RabbitMQ broker on localhost with TLS on 5671, failures ignored; the report decides"
   runtime: OpenJDK 1.8.0_382 (Zulu 8.72.0.17, linux-aarch64), Apache Maven 3.9.16, RabbitMQ 3.12.1 (Ubuntu 24.04 package, node rabbit@localhost, TLS on 5671 with test certificates) on a Linux aarch64 devpod
-  report: amqp-client-5.14.3.1-backpatch-00008-tests.zip
-  report_sha256: d15f2cc9853fbfaecedf83c480c70d9dd84948eb406dfe4a8ce1fb37befbb398
+  report: amqp-client-5.14.3.1-backpatch-00009-tests.zip
+  report_sha256: 1c33eb7765ccf63bb9605366da93c98630ebdb4da402eb460a88975f8b2bfe08
   result: pass
-  note: "260 tests at the patch commit, 3 of them skipped by the suite, 0 failed, 0 errors. ClientTests and SSLTests ran on a Linux aarch64 devpod against Ubuntu's rabbitmq-server, rabbitmqctl at its native path, TLS on 5671 with test certificates made there (a CA, a server certificate for localhost, a client keycert.p12); the baseline 5.14.3 ran there too: 215 tests, 0 red. SSLTests skips VerifiedConnection, BadVerifiedConnection and HostnameVerification on Java 8 by its own condition (it expects Java 11), at the baseline too."
+  note: "265 tests at the patch commit, 3 of them skipped by the suite, 0 failed, 0 errors. ClientTests and SSLTests ran on a Linux aarch64 devpod against Ubuntu's rabbitmq-server, rabbitmqctl at its native path, TLS on 5671 with test certificates made there (a CA, a server certificate for localhost, a client keycert.p12); the baseline 5.14.3 ran there too: 215 tests, 0 red. SSLTests skips VerifiedConnection, BadVerifiedConnection and HostnameVerification on Java 8 by its own condition (it expects Java 11), at the baseline too."
