@@ -89,7 +89,8 @@ import org.junit.runners.Suite;
     AMQConnectionRefreshCredentialsTest.class,
     NegotiatedFrameMaxInboundTest.class,
     InboundFrameMax.class,
-    UtilsTest.class
+    UtilsTest.class,
+    TlsDefaultVerificationTest.class
 })
 public class ClientTests {
 

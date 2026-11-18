@@ -58,7 +58,7 @@ public class NioTlsUnverifiedConnection extends BrokerTestCase {
     public void openConnection()
         throws IOException, TimeoutException {
         try {
-            connectionFactory.useSslProtocol();
+            connectionFactory.useTlsWithNoVerification();
             connectionFactory.useNio();
         } catch (Exception ex) {
             throw new IOException(ex.toString());
@@ -123,7 +123,7 @@ public class NioTlsUnverifiedConnection extends BrokerTestCase {
     @Test public void socketChannelConfigurator() throws Exception {
         ConnectionFactory connectionFactory = new ConnectionFactory();
         connectionFactory.useNio();
-        connectionFactory.useSslProtocol();
+        connectionFactory.useTlsWithNoVerification();
         NioParams nioParams = new NioParams();
         final AtomicBoolean sslEngineHasBeenCalled = new AtomicBoolean(false);
         nioParams.setSslEngineConfigurator(sslEngine -> sslEngineHasBeenCalled.set(true));

@@ -34,7 +34,7 @@ public class UnverifiedConnection extends BrokerTestCase {
     public void openConnection()
             throws IOException, TimeoutException {
         try {
-            connectionFactory.useSslProtocol();
+            connectionFactory.useTlsWithNoVerification();
         } catch (Exception ex) {
             throw new IOException(ex);
         }
