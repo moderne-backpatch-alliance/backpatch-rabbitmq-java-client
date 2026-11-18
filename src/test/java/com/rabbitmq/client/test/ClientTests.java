@@ -90,7 +90,8 @@ import org.junit.runners.Suite;
     NegotiatedFrameMaxInboundTest.class,
     InboundFrameMax.class,
     UtilsTest.class,
-    TlsDefaultVerificationTest.class
+    TlsDefaultVerificationTest.class,
+    ConnectionFactoryConfiguratorUriErrorTest.class
 })
 public class ClientTests {
 
