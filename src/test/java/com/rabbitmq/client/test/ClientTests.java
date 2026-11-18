@@ -78,6 +78,7 @@ import org.junit.runners.Suite;
     ChannelNTest.class,
     ValueWriterTest.class,
     ProcedureDescriptionTest.class,
+    ValueReaderTest.class,
     RefreshProtectedCredentialsProviderTest.class,
     DefaultCredentialsRefreshServiceTest.class,
     OAuth2ClientCredentialsGrantCredentialsProviderTest.class,
