@@ -77,6 +77,7 @@ import org.junit.runners.Suite;
     TlsUtilsTest.class,
     ChannelNTest.class,
     ValueWriterTest.class,
+    ProcedureDescriptionTest.class,
     RefreshProtectedCredentialsProviderTest.class,
     DefaultCredentialsRefreshServiceTest.class,
     OAuth2ClientCredentialsGrantCredentialsProviderTest.class,
